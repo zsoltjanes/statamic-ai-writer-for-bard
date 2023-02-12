@@ -1,5 +1,7 @@
 {
     "name": "zsoltjanes/statamic-bard-openai",
+    "type": "statamic-addon",
+    "description": "Ai Writer for Statamic 3 Bard fieldtype",
     "authors": [
         {
             "name": "Zsolt Janes"
@@ -20,7 +22,7 @@
         },
         "laravel": {
             "providers": [
-                "ServiceProvider"
+                "Zsoltjanes\\StatamicBardOpenai\\ServiceProvider"
             ]
         }
     },
