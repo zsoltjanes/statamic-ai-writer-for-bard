@@ -1,5 +1,13 @@
 {
     "name": "zsoltjanes/statamic-bard-openai",
+    "authors": [
+        {
+            "name": "Zsolt Janes"
+        }
+    ],
+    "support": {
+        "email": "zsolt.janes@gmail.com"
+    },
     "autoload": {
         "psr-4": {
             "Zsoltjanes\\StatamicBardOpenai\\": "src"
@@ -12,7 +20,7 @@
         },
         "laravel": {
             "providers": [
-                "StatamicBardOpenaiServiceProvider"
+                "ServiceProvider"
             ]
         }
     },

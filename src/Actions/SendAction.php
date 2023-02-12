@@ -2,24 +2,22 @@
 
 namespace Zsoltjanes\StatamicBardOpenai\Actions;
 
-use Exception;
+use Zsoltjanes\StatamicBardOpenai\Constants\OpenAiApi;
 use Zsoltjanes\StatamicBardOpenai\Requests\OpenAIRequest;
 
 class SendAction
 {
 
     private TiptapContentToHtmlAction $contentToHtmlAction;
-    private PostCompletionsAction $postCompletionsAction;
-    private array $openAiConfig;
-    private array $settingsConfig;
+    private OpenAiRequestAction $postCompletionsAction;
+    private array $config;
 
     public function __construct(
         TiptapContentToHtmlAction $contentToHtmlAction,
-        PostCompletionsAction     $postCompletionsAction
+        OpenAiRequestAction $postCompletionsAction
     )
     {
-        $this->openAiConfig = config('statamic-bard-openai');
-        $this->settingsConfig = config('statamic-bard-openai-settings');
+        $this->config = config('statamic-bard-openai');
         $this->contentToHtmlAction = $contentToHtmlAction;
         $this->postCompletionsAction = $postCompletionsAction;
     }
@@ -28,17 +26,18 @@ class SendAction
     {
         $type = $request->get('type');
         $prompt = $request->get('prompt');
-        $promptPrefix = $this->settingsConfig['prompt-prefixes'][$type];
 
-        $html = $this->contentToHtmlAction->run($prompt);
+        $method = 'POST';
+
+        $url = OpenAiApi::BASE_URL . OpenAiApi::URL_SUFFIX_COMPLETIONS;
+
         $headers = $this->setHeaders();
 
-        $url = $this->settingsConfig['api_url'];
-        $prompt = $promptPrefix . $html;
-
+        $html = $this->contentToHtmlAction->run($prompt);
+        $prompt = $this->config['prompt-prefixes'][$type] . $html;
         $data = $this->setData($prompt);
 
-        return $this->postCompletionsAction->run($url, $headers, $data);
+        return $this->postCompletionsAction->run($method, $url, $headers, $data);
     }
 
     private function setHeaders(): array
@@ -46,10 +45,10 @@ class SendAction
         $headers = [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->openAiConfig['api_key'],
+            'Authorization' => 'Bearer ' . $this->config['api_key'],
         ];
 
-        $organization = $this->openAiConfig['organization'];
+        $organization = $this->config['organization'];
 
         if ($organization) {
             $headers['OpenAI-Organization'] = $organization;
@@ -61,7 +60,7 @@ class SendAction
     private function setData($prompt): array
     {
         return [
-            ...$this->openAiConfig['defaults'],
+            ...$this->config['defaults'],
             'prompt' => $prompt,
         ];
     }

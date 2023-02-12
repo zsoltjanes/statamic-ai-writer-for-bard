@@ -28,7 +28,7 @@ class OpenAIRequest extends FormRequest
             'prompt' => ['required', 'array'],
             'prompt.type' => ['required', Rule::in(['doc'])],
             'prompt.content' => ['required', 'array'],
-            'type' => ['required', Rule::in(array_keys(config('statamic-bard-openai-settings')['prompt-prefixes']))],
+            'type' => ['required', Rule::in(array_keys(config('statamic-bard-openai')['prompt-prefixes']))],
         ];
     }
 }

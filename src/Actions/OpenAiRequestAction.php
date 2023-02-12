@@ -5,14 +5,14 @@ namespace Zsoltjanes\StatamicBardOpenai\Actions;
 use Exception;
 use GuzzleHttp\Client;
 
-class PostCompletionsAction
+class OpenAiRequestAction
 {
-    public function run($url, $headers, $data): bool|string
+    public function run($method, $url, $headers, $data): bool|string
     {
         $client = new Client();
 
         try {
-            $response = $client->post($url, [
+            $response = $client->request($method, $url, [
                 'headers' => $headers,
                 'body' => json_encode($data)
             ]);

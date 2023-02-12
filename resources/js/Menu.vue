@@ -95,7 +95,11 @@ export default {
                         }
                     }
 
-                    Statamic.$toast.success(__('OpenAI response successfully!'));
+                    if (response?.data?.text) {
+                        Statamic.$toast.success(__('OpenAI response successfully!'));
+                    } else {
+                        Statamic.$toast.error(response.data);
+                    }
                 }
             }).catch(function (error) {
                 Statamic.$toast.error(error?.response?.data || error.message);
