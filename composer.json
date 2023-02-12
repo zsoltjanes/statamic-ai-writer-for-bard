@@ -1,0 +1,23 @@
+{
+    "name": "zsoltjanes/statamic-bard-openai",
+    "autoload": {
+        "psr-4": {
+            "Zsoltjanes\\StatamicBardOpenai\\": "src"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Statamic Bard Openai",
+            "description": "Statamic Bard Openai addon"
+        },
+        "laravel": {
+            "providers": [
+                "StatamicBardOpenaiServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "ueberdosis/tiptap-php": "^1.1",
+        "guzzlehttp/guzzle": "^7.0"
+    }
+}
