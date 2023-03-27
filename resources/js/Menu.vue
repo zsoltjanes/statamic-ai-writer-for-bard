@@ -79,7 +79,7 @@ export default {
 
             const that = this;
 
-            await axios.post('/!/statamic-bard-openai/', data).then(function (response) {
+            await axios.post('/!/statamic-bard-openai', data).then(function (response) {
                 if (response?.data) {
 
                     if (type === 'grammar' || type === 'article' || type === 'advertisement' || type === 'continue') {
