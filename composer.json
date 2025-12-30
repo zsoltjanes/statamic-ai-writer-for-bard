@@ -1,7 +1,8 @@
 {
     "name": "zsoltjanes/statamic-bard-openai",
+    "version": "dev-main",
     "type": "statamic-addon",
-    "description": "Ai Writer for Statamic 3 Bard fieldtype",
+    "description": "AI Writer for Statamic Bard fieldtype",
     "authors": [
         {
             "name": "Zsolt Janes"

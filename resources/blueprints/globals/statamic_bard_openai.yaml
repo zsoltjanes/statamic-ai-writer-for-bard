@@ -1,0 +1,79 @@
+title: Bard AI Writer
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: presets
+        field:
+          type: grid
+          display: Presets
+          fields:
+            -
+              handle: handle
+              field:
+                type: text
+                display: Handle
+                validate:
+                  - required
+            -
+              handle: label
+              field:
+                type: text
+                display: Label
+                validate:
+                  - required
+            -
+              handle: prefix
+              field:
+                type: textarea
+                display: Prompt prefix
+                validate:
+                  - required
+            -
+              handle: mode
+              field:
+                type: select
+                display: Mode
+                options:
+                  replace: Replace selection
+                  append: Append
+                  prepend: Prepend
+                default: replace
+          default:
+            - handle: grammar
+              label: 'Grammar correction'
+              prefix: 'Correct my grammar and give back the same HTML format:'
+              mode: replace
+            - handle: continue
+              label: 'Continue'
+              prefix: 'Continue the following and give back the same HTML format:'
+              mode: replace
+            - handle: summarize
+              label: 'Summarize'
+              prefix: 'Summarize the following:'
+              mode: append
+            - handle: article
+              label: 'Generate an article'
+              prefix: 'Generate an article about the following:'
+              mode: replace
+            - handle: advertisement
+              label: 'Generate an advertisement'
+              prefix: 'Generate an advertisement about the following with emojis:'
+              mode: replace
+      -
+        handle: api_key
+        field:
+          type: text
+          display: API key
+      -
+        handle: organization
+        field:
+          type: text
+          display: Organization
+      -
+        handle: model
+        field:
+          type: text
+          display: Model
+          default: gpt-5.2

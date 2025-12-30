@@ -28,24 +28,20 @@ export default {
     data() {
         return {
             showDropdown: false,
-            defaultOptions: {
-                'grammar': {
-                    name: 'Grammar correction',
-                },
-                'continue': {
-                    name: 'Continue',
-                },
-                'summarize': {
-                    name: 'Summarize',
-                },
-                'article': {
-                    name: 'Generate an article',
-                },
-                'advertisement': {
-                    name: 'Generate an advertisement',
-                },
-            }
+            defaultOptions: {}
         };
+    },
+    async mounted() {
+        try {
+            const response = await axios.get('/!/statamic-bard-openai/presets');
+            const options = response?.data?.options;
+
+            if (options && typeof options === 'object' && Object.keys(options).length) {
+                this.defaultOptions = options;
+            }
+        } catch (e) {
+            this.defaultOptions = {};
+        }
     },
     methods: {
         toggleDropdown() {
@@ -81,21 +77,22 @@ export default {
 
             await axios.post('/!/statamic-bard-openai', data).then(function (response) {
                 if (response?.data) {
+                    const text = response?.data?.text;
+                    const option = that.defaultOptions?.[type] || {};
+                    const mode = option?.mode || 'replace';
 
-                    if (type === 'grammar' || type === 'article' || type === 'advertisement' || type === 'continue') {
-                        if (response?.data?.text) {
+                    if (text) {
+                        if (mode === 'append') {
+                            that.editor.commands.insertContentAt(selectionTo, text);
+                        } else if (mode === 'prepend') {
+                            that.editor.commands.insertContentAt(selectionFrom, text);
+                        } else {
                             that.editor.commands.deleteSelection();
-                            that.editor.commands.insertContentAt(selectionFrom, response.data.text);
+                            that.editor.commands.insertContentAt(selectionFrom, text);
                         }
                     }
 
-                    if (type === 'summarize') {
-                        if (response?.data?.text) {
-                            that.editor.commands.insertContentAt(selectionTo, `Summary: ${response.data.text}`);
-                        }
-                    }
-
-                    if (response?.data?.text) {
+                    if (text) {
                         Statamic.$toast.success(__('OpenAI response successfully!'));
                     } else {
                         Statamic.$toast.error(response.data);
